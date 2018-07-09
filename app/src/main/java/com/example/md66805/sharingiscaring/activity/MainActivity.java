@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.login_page);
+        getSupportActionBar().hide();
 
         if("True".equalsIgnoreCase(getIntent().getStringExtra("Exit"))) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         }
 
-        findViewById(R.id.textViewRacfId);
         spinner = findViewById(R.id.loginSpinner);
         List<String> domains = new ArrayList<>();
         domains.add("Please select your domain");

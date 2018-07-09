@@ -1,7 +1,5 @@
 package com.example.md66805.sharingiscaring.domain;
 
-import com.example.md66805.sharingiscaring.domain.ItemDetails;
-
 import java.io.Serializable;
 import java.util.List;
 

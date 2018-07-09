@@ -1,18 +1,12 @@
 package com.example.md66805.sharingiscaring.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Handler;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,15 +14,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.md66805.sharingiscaring.R;
 import com.example.md66805.sharingiscaring.Utility;
 import com.example.md66805.sharingiscaring.adapter.MyAdapter;
-import com.example.md66805.sharingiscaring.R;
 import com.example.md66805.sharingiscaring.domain.ItemDetails;
 import com.example.md66805.sharingiscaring.domain.ListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemActivity extends AppCompatActivity {
 
@@ -56,7 +53,7 @@ public class ItemActivity extends AppCompatActivity {
 
         listItems = new ArrayList<>();
 
-        getResponseText("https://api.jsonbin.io/b/5b3f7459a5a2f34ea6b20884/12");
+        getResponseText("http://204.54.27.233:7564/devices");
     }
 
     private void goToLoginPage(String racfId) {
@@ -74,22 +71,24 @@ public class ItemActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("devices");
+                            JSONArray jsonArray = jsonObject.getJSONArray("catalogue");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 List<ItemDetails> itemDetails = new ArrayList<>();
-                                JSONArray itemArray = object.getJSONArray("details");
+                                JSONArray itemArray = object.getJSONArray("deviceList");
                                 for (int j = 0; j < itemArray.length(); j++) {
                                     JSONObject itemObject = itemArray.getJSONObject(j);
                                     ItemDetails itemDetail = new ItemDetails(
-                                            itemObject.getString("Extn"),
-                                            itemObject.getString("name"),
+                                            itemObject.getString("serialNumber"),
+                                            itemObject.getString("racfId"),
+                                            itemObject.getString("owner"),
                                             itemObject.getString("domain"),
-                                            itemObject.getString("type")
+                                            itemObject.getString("model"),
+                                            ""
                                     );
                                     itemDetails.add(itemDetail);
                                 }
-                                ListItem listItem = new ListItem(object.getString("name"), String.valueOf(object.getJSONArray("details").length()), racfId, domain, itemDetails);
+                                ListItem listItem = new ListItem(object.getString("type"), String.valueOf(object.getJSONArray("deviceList").length()), racfId, domain, itemDetails);
                                 listItems.add(listItem);
                             }
                             adapter = new MyAdapter(listItems, getApplicationContext());
