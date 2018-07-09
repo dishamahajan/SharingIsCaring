@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     EditText racfId;
     Spinner spinner;
     Button loginButton;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +70,21 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("domain",String.valueOf(spinner.getSelectedItem()));
                     startActivity(intent);
                 } else if(racfId.getText().toString().isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Please enter your Racf Id!!!", Toast.LENGTH_SHORT).show();
+                    showToast("Please enter your Racf Id!!!");
                     //Snackbar.make(view,"Please enter your Racf Id!!!!!",Snackbar.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Please select your Domain!!!", Toast.LENGTH_SHORT).show();
+                    showToast("Please select your Domain!!!");
                     //Snackbar.make(view,"Please select your Domain!!!!!",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    private void showToast(String msg) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }
