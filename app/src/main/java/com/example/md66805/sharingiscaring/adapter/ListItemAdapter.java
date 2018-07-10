@@ -1,17 +1,15 @@
 package com.example.md66805.sharingiscaring.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,25 +18,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.md66805.sharingiscaring.R;
-import com.example.md66805.sharingiscaring.activity.DetailActivity;
-import com.example.md66805.sharingiscaring.activity.MainActivity;
 import com.example.md66805.sharingiscaring.domain.ItemDetails;
-import com.example.md66805.sharingiscaring.domain.ListItem;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
 
     private List<ItemDetails> items;
     private String racfId;
     private Context context;
+    private View view;
 
-    public ListItemAdapter(List<ItemDetails> items, String racfId, Context context) {
+    public ListItemAdapter(List<ItemDetails> items, String racfId, Context context, View view) {
         this.items = items;
         this.racfId = racfId;
         this.context = context;
+        this.view = view;
     }
 
     @NonNull
@@ -90,10 +85,10 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                         // response
                         if(!updateId.equalsIgnoreCase("Admin")){
                             viewHolder.checkIn.setText("CHECK OUT");
-                            Toast.makeText(context, "Check In Successfully", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view,"Checked In Successfully!",Snackbar.LENGTH_SHORT).show();
                         } else {
                             viewHolder.checkIn.setText("CHECK IN");
-                            Toast.makeText(context, "Check Out Successfully", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view,"Checked Out Successfully!",Snackbar.LENGTH_SHORT).show();
                         }
                         viewHolder.name.setText(updateId);
                         listItem.setRacfId(updateId);
@@ -103,7 +98,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error"+ error.toString(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view,"Error"+ error.toString(),Snackbar.LENGTH_SHORT).show();
                     }
                 }
         );

@@ -1,20 +1,18 @@
 package com.example.md66805.sharingiscaring.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,7 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +44,6 @@ public class ItemActivity extends AppCompatActivity {
     String racfId;
     String domain;
     Button refresh;
-    Toast toast;
 
     ProgressBar progressBar;
 
@@ -81,16 +77,9 @@ public class ItemActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            showToast("Please check your Internet Connection!");
-        }
-    }
 
-    private void showToast(String msg) {
-        if (toast != null) {
-            toast.cancel();
+            Snackbar.make(findViewById(R.id.mainActivity),"Please check your Internet Connection!",Snackbar.LENGTH_SHORT).show();
         }
-        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     private void goToLoginPage(String racfId) {
@@ -143,7 +132,7 @@ public class ItemActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        showToast("Error : Cannot Fetch Data!");
+                        Snackbar.make(findViewById(R.id.mainActivity),"Error : Cannot Fetch Data!",Snackbar.LENGTH_SHORT).show();
                     }
                 });
 
@@ -171,7 +160,7 @@ public class ItemActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to EXIT!", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.mainActivity),"Please click Back again to Exit!",Snackbar.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 

@@ -34,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewDetail);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this);
+        adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this, findViewById(R.id.activityDetail));
         recyclerView.setAdapter(adapter);
     }
 

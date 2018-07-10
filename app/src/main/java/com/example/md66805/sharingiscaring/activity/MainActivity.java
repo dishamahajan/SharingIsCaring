@@ -2,13 +2,13 @@ package com.example.md66805.sharingiscaring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.md66805.sharingiscaring.R;
 
@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     EditText racfId;
     Spinner spinner;
     Button loginButton;
-    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("domain",String.valueOf(spinner.getSelectedItem()));
                     startActivity(intent);
                 } else if(racfId.getText().toString().isEmpty()) {
-                    showToast("Please enter your Racf Id!!!");
-                    //Snackbar.make(view,"Please enter your Racf Id!!!!!",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view,"Please enter your Racf Id!!!",Snackbar.LENGTH_SHORT).show();
                 } else {
-                    showToast("Please select your Domain!!!");
-                    //Snackbar.make(view,"Please select your Domain!!!!!",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view,"Please select your Domain!!!",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private void showToast(String msg) {
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT);
-        toast.show();
     }
 }
