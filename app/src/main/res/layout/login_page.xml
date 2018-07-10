@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -15,11 +14,13 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
+        <!--#367c2b android:background="@drawable/background_gradiant"-->
         <ImageView
-            android:background="#88e0e0e0"
+            android:background="@drawable/background_gradiant2"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
+        <!--yellow #ffde00  gray #88e0e0e0-->
     </LinearLayout>
 
     <LinearLayout
@@ -52,9 +53,14 @@
         <Button
             android:id="@+id/loginButton"
             android:text="Login"
+            android:textColor="#000"
             android:layout_width="match_parent"
             android:padding="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:height="48dp"
+            android:width="100dp"
+            />
+
 
     </LinearLayout>
     

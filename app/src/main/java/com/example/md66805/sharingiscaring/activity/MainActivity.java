@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 racfId = findViewById(R.id.textViewRacfId);
                 spinner = (Spinner) findViewById(R.id.loginSpinner);
                 if (!racfId.getText().toString().isEmpty() && spinner.getSelectedItem()!="Please select your domain") {
+                    finish();
                     Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
                     intent.putExtra("racfId", racfId.getText().toString());
                     intent.putExtra("domain",String.valueOf(spinner.getSelectedItem()));

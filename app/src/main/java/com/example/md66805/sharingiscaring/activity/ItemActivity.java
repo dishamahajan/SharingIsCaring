@@ -1,12 +1,18 @@
 package com.example.md66805.sharingiscaring.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +46,8 @@ public class ItemActivity extends AppCompatActivity {
     private List<ListItem> listItems;
     String racfId;
     String domain;
+    Button refresh;
+    Toast toast;
 
     ProgressBar progressBar;
 
@@ -54,10 +63,34 @@ public class ItemActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         listItems = new ArrayList<>();
+        if(isMobileDataEnabled()) {
+            getResponseText("http://204.54.27.233:7564/devices");
+        }
+        else{
+            progressBar.setVisibility(View.GONE);
+            refresh=findViewById(R.id.refreshButton);
+            refresh.setVisibility(View.VISIBLE);
+            refresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
+                    intent.putExtra("racfId", racfId);
+                    intent.putExtra("domain",domain);
+                    startActivity(intent);
+                }
+            });
+            showToast("Please check your Internet Connection!");
+        }
+    }
 
-        getResponseText("http://204.54.27.233:7564/devices");
+    private void showToast(String msg) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void goToLoginPage(String racfId) {
@@ -110,11 +143,19 @@ public class ItemActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
+                        showToast("Error : Cannot Fetch Data!");
                     }
                 });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+
+    private boolean isMobileDataEnabled(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override

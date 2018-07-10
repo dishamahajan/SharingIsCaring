@@ -19,4 +19,14 @@
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
 
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="Refresh"
+        android:height="48dp"
+        android:visibility="invisible" />
+
 </RelativeLayout>
