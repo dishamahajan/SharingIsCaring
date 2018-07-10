@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,6 +40,8 @@ public class ItemActivity extends AppCompatActivity {
     String racfId;
     String domain;
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +49,8 @@ public class ItemActivity extends AppCompatActivity {
         racfId = getIntent().getStringExtra("racfId");
         domain = getIntent().getStringExtra("domain");
         goToLoginPage(racfId);
-
-        Utility.ActionBarSetup(racfId+" from "+domain, getSupportActionBar());
+        progressBar = findViewById(R.id.progressBar);
+        Utility.ActionBarSetup(racfId + " from " + domain, getSupportActionBar());
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,6 +68,7 @@ public class ItemActivity extends AppCompatActivity {
 
 
     private void getResponseText(String stringUrl) {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 stringUrl,
                 new Response.Listener<String>() {
@@ -93,15 +98,18 @@ public class ItemActivity extends AppCompatActivity {
                             }
                             adapter = new MyAdapter(listItems, getApplicationContext());
                             recyclerView.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
+
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -117,7 +125,7 @@ public class ItemActivity extends AppCompatActivity {
             launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            launchNextActivity.putExtra("Exit","True");
+            launchNextActivity.putExtra("Exit", "True");
             startActivity(launchNextActivity);
         }
 
@@ -128,7 +136,7 @@ public class ItemActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
