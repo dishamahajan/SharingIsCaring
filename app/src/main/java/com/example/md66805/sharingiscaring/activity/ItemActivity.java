@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.md66805.sharingiscaring.R;
 import com.example.md66805.sharingiscaring.Utility;
+import com.example.md66805.sharingiscaring.adapter.ListItemAdapter;
 import com.example.md66805.sharingiscaring.adapter.MyAdapter;
 import com.example.md66805.sharingiscaring.domain.ItemDetails;
 import com.example.md66805.sharingiscaring.domain.ListItem;
@@ -38,6 +41,10 @@ public class ItemActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+
+
+    private RecyclerView recyclerViewDetail;
+    private RecyclerView.Adapter adapterDetail;
 
     boolean doubleBackToExitPressedOnce = false;
     private List<ListItem> listItems;
@@ -59,13 +66,16 @@ public class ItemActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerViewDetail = findViewById(R.id.recyclerView);
+        recyclerViewDetail.setHasFixedSize(true);
+        recyclerViewDetail.setLayoutManager(new LinearLayoutManager(this));
         listItems = new ArrayList<>();
-        if(isMobileDataEnabled()) {
+        if (isMobileDataEnabled()) {
             getResponseText("http://204.54.27.233:7564/devices");
-        }
-        else{
+        } else {
             progressBar.setVisibility(View.GONE);
-            refresh=findViewById(R.id.refreshButton);
+            refresh = findViewById(R.id.refreshButton);
             refresh.setVisibility(View.VISIBLE);
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,12 +83,12 @@ public class ItemActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
                     intent.putExtra("racfId", racfId);
-                    intent.putExtra("domain",domain);
+                    intent.putExtra("domain", domain);
                     startActivity(intent);
                 }
             });
 
-            Snackbar.make(findViewById(R.id.mainActivity),"Please check your Internet Connection!",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.mainActivity), "Please check your Internet Connection!", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -86,6 +96,53 @@ public class ItemActivity extends AppCompatActivity {
         if (racfId == null || racfId.isEmpty()) {
             startActivity(new Intent(this, MainActivity.class));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.all_devices:
+                adapter = new MyAdapter(listItems, getApplicationContext());
+                recyclerView.setAdapter(adapter);
+                break;
+            case R.id.my_devices:
+                adapter = new ListItemAdapter(getMydevices(racfId), racfId, this, findViewById(R.id.activityDetail));
+                recyclerView.setAdapter(adapter);
+                break;
+            case R.id.available_devices:
+                adapter = new ListItemAdapter(getMydevices("Admin"), racfId, this, findViewById(R.id.activityDetail));
+                recyclerView.setAdapter(adapter);
+                break;
+            case R.id.logout:
+                finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private List<ItemDetails> getMydevices(String userId) {
+        List<ItemDetails> listItemList = new ArrayList<>();
+        for (ListItem listItem :
+                listItems) {
+            for (ItemDetails itemDetails :
+                    listItem.getItemDetails()) {
+                if (itemDetails.getRacfId().equalsIgnoreCase(userId)) {
+                    listItemList.add(itemDetails);
+                }
+
+            }
+        }
+        return listItemList;
     }
 
 
@@ -132,7 +189,7 @@ public class ItemActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Snackbar.make(findViewById(R.id.mainActivity),"Error : Cannot Fetch Data!",Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(R.id.mainActivity), "Error : Cannot Fetch Data!", Snackbar.LENGTH_SHORT).show();
                     }
                 });
 
@@ -141,7 +198,7 @@ public class ItemActivity extends AppCompatActivity {
     }
 
 
-    private boolean isMobileDataEnabled(){
+    private boolean isMobileDataEnabled() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
@@ -160,7 +217,7 @@ public class ItemActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Snackbar.make(findViewById(R.id.mainActivity),"Please click Back again to Exit!",Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.mainActivity), "Please click Back again to Exit!", Snackbar.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 
