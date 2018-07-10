@@ -43,6 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("detail", listItem);
                 context.startActivity(intent);
             }
