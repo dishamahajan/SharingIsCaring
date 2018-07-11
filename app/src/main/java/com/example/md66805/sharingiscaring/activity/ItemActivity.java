@@ -46,7 +46,7 @@ public class ItemActivity extends AppCompatActivity {
     private RecyclerView recyclerViewDetail;
     private RecyclerView.Adapter adapterDetail;
 
-    boolean doubleBackToExitPressedOnce = false;
+    boolean doubleBackToExitPressedOnce;
     private List<ListItem> listItems;
     String racfId;
     String domain;

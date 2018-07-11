@@ -2,6 +2,7 @@ package com.example.md66805.sharingiscaring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     EditText racfId;
     Spinner spinner;
     Button loginButton;
+    boolean doubleBackToExitPressedOnce;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,4 +79,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            Intent launchNextActivity;
+            launchNextActivity = new Intent(this, MainActivity.class);
+            launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            launchNextActivity.putExtra("Exit", "True");
+            startActivity(launchNextActivity);
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Snackbar.make(findViewById(R.id.loginActivity), "Please click Back again to Exit!", Snackbar.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
+
 }
