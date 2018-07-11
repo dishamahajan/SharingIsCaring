@@ -76,8 +76,9 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     }
 
     private void sendPutRequest(final ItemDetails listItem,final ViewHolder viewHolder,final String updateId, String serialNumber){
+        String url = "https://salescenterdevl2.tal.deere.com/version?serialNumber="+serialNumber+"&userId="+updateId;
         StringRequest putRequest = new StringRequest(Request.Method.PUT,
-                "http://204.54.27.233:7564/checkIn/"+serialNumber+"/"+updateId,
+                url,
                 new Response.Listener<String>()
                 {
                     @Override

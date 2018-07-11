@@ -72,7 +72,7 @@ public class ItemActivity extends AppCompatActivity {
         recyclerViewDetail.setLayoutManager(new LinearLayoutManager(this));
         listItems = new ArrayList<>();
         if (isMobileDataEnabled()) {
-            getResponseText("http://204.54.27.233:7564/devices");
+            getResponseText("https://salescenterdevl2.tal.deere.com/version");
         } else {
             progressBar.setVisibility(View.GONE);
             refresh = findViewById(R.id.refreshButton);
