@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!racfId.getText().toString().isEmpty() && spinner.getSelectedItem()!="Please select your domain") {
                     finish();
                     Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
-                    intent.putExtra("racfId", racfId.getText().toString());
-                    intent.putExtra("domain",String.valueOf(spinner.getSelectedItem()));
+                    intent.putExtra("racfId", racfId.getText().toString().toUpperCase().trim());
+                    intent.putExtra("domain",String.valueOf(spinner.getSelectedItem()).trim());
                     startActivity(intent);
                 } else if(racfId.getText().toString().isEmpty()) {
                     Snackbar.make(view,"Please enter your Racf Id!!!",Snackbar.LENGTH_SHORT).show();

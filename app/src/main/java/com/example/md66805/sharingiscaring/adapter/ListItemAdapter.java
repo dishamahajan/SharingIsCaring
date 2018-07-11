@@ -3,12 +3,14 @@ package com.example.md66805.sharingiscaring.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -22,18 +24,20 @@ import com.example.md66805.sharingiscaring.domain.ItemDetails;
 
 import java.util.List;
 
-public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
+public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder>{
 
     private List<ItemDetails> items;
     private String racfId;
     private Context context;
     private View view;
+    ProgressBar progressBar;
 
-    public ListItemAdapter(List<ItemDetails> items, String racfId, Context context, View view) {
+    public ListItemAdapter(List<ItemDetails> items, String racfId, Context context, View view,ProgressBar progressBar) {
         this.items = items;
         this.racfId = racfId;
         this.context = context;
         this.view = view;
+        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -76,6 +80,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     }
 
     private void sendPutRequest(final ItemDetails listItem,final ViewHolder viewHolder,final String updateId, String serialNumber){
+        progressBar.setVisibility(View.VISIBLE);
         String url = "https://salescenterdevl2.tal.deere.com/version?serialNumber="+serialNumber+"&userId="+updateId;
         StringRequest putRequest = new StringRequest(Request.Method.PUT,
                 url,
@@ -93,12 +98,14 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
                         }
                         viewHolder.name.setText(updateId);
                         listItem.setRacfId(updateId);
+                        progressBar.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Snackbar.make(view,"Error"+ error.toString(),Snackbar.LENGTH_SHORT).show();
                     }
                 }

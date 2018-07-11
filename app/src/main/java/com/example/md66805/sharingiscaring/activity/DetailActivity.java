@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.md66805.sharingiscaring.R;
 import com.example.md66805.sharingiscaring.Utility;
@@ -24,13 +26,13 @@ public class DetailActivity extends AppCompatActivity {
     String racfId;
     String domain;
     ListItem listItem;
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
         Intent i = getIntent();
         listItem = (ListItem) i.getSerializableExtra("detail");
         goToLoginPage(listItem);
@@ -38,11 +40,12 @@ public class DetailActivity extends AppCompatActivity {
         domain = listItem.getDomain();
         Utility.ActionBarSetup(racfId + " from " + domain, getSupportActionBar());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        progressBar = findViewById(R.id.progressBar1);
+        progressBar.setVisibility(View.GONE);
         recyclerView = findViewById(R.id.recyclerViewDetail);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this, findViewById(R.id.activityDetail));
+        adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this, findViewById(R.id.activityDetail), progressBar);
         recyclerView.setAdapter(adapter);
     }
 
@@ -94,15 +97,15 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.all_devices:
-                adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this, findViewById(R.id.activityDetail));
+                adapter = new ListItemAdapter(listItem.getItemDetails(), racfId, this, findViewById(R.id.activityDetail),progressBar);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.my_devices:
-                adapter = new ListItemAdapter(getDevices(listItem.getItemDetails(), racfId), racfId, this, findViewById(R.id.activityDetail));
+                adapter = new ListItemAdapter(getDevices(listItem.getItemDetails(), racfId), racfId, this, findViewById(R.id.activityDetail),progressBar);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.available_devices:
-                adapter = new ListItemAdapter(getDevices(listItem.getItemDetails(), "Admin"), racfId, this, findViewById(R.id.activityDetail));
+                adapter = new ListItemAdapter(getDevices(listItem.getItemDetails(), "Admin"), racfId, this, findViewById(R.id.activityDetail),progressBar);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.logout:

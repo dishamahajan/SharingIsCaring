@@ -113,11 +113,11 @@ public class ItemActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.my_devices:
-                adapter = new ListItemAdapter(getMydevices(racfId), racfId, this, findViewById(R.id.mainActivity));
+                adapter = new ListItemAdapter(getMydevices(racfId), racfId, this, findViewById(R.id.mainActivity),progressBar);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.available_devices:
-                adapter = new ListItemAdapter(getMydevices("Admin"), racfId, this, findViewById(R.id.mainActivity));
+                adapter = new ListItemAdapter(getMydevices("Admin"), racfId, this, findViewById(R.id.mainActivity),progressBar);
                 recyclerView.setAdapter(adapter);
                 break;
             case R.id.logout:
